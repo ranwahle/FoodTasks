@@ -37,7 +37,7 @@ app.get('/whobrings-what', async (req, res) => {
 })
 
 app.post('/items',  (req, res) => {
-    filesystem.readFile('./items.json', async (err, items) => {
+    filesystem.readFile(`${__dirname}/items.json`, async (err, items) => {
         items = await getItems();
         const newItems = req.body;
         newitems.forEach(newItem => newItem.id = '#' + (Math.random() * 0xFFFFFF << 0).toString(16));
@@ -49,7 +49,7 @@ app.post('/items',  (req, res) => {
 
 const getSelectedItems = () => {
     return new Promise((resolve, reject ) => {
-        fileSystem.readFile('./selectedItems.json', (err, items) => {
+        fileSystem.readFile(`${__dirname}/selectedItems.json`, (err, items) => {
             if (err) {
                 resolve([]);
                 return;
@@ -72,7 +72,7 @@ app.post('/set-item', async (req, res) => {
         res.status(400).send('already taken');
     } else {
         selectedItems.push({id: selectedItem.id, kidName});
-        fileSystem.writeFile('./selectedItems.json', JSON.stringify(selectedItems), (err, result) => {
+        fileSystem.writeFile(`${__dirname}/selectedItems.json`, JSON.stringify(selectedItems), (err, result) => {
             if (!err) {
                 res.status(201).send('OK');
             } else {

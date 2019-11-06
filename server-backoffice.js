@@ -33,13 +33,13 @@ export function getItems() {
 }
 
 app.post('/item',  (req, res) => {
-    filesystem.readFile('./items.json', async (err, items) => {
+    filesystem.readFile(`${__dirname}/items.json`, async (err, items) => {
         items = await getItems();
         const newItem = req.body;
         newItem.id = '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
 
         items.push(newItem);
-        filesystem.writeFile('./items.json', JSON.stringify(items), () => res.status(200).send(items));
+        filesystem.writeFile(`${__dirname}/items.json`, JSON.stringify(items), () => res.status(200).send(items));
     });
 
 })
