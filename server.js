@@ -36,6 +36,17 @@ app.get('/whobrings-what', async (req, res) => {
     res.status(200).send(itemsWithKids);
 })
 
+app.post('/items',  (req, res) => {
+    filesystem.readFile('./items.json', async (err, items) => {
+        items = await getItems();
+        const newItems = req.body;
+        newitems.forEach(newItem => newItem.id = '#' + (Math.random() * 0xFFFFFF << 0).toString(16));
+        items.push(...newItems);
+        filesystem.writeFile('./items.json', JSON.stringify(items), () => res.status(200).send(items));
+    });
+
+})
+
 const getSelectedItems = () => {
     return new Promise((resolve, reject ) => {
         fileSystem.readFile('./selectedItems.json', (err, items) => {
