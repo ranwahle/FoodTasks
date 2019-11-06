@@ -1,0 +1,55 @@
+body{
+    direction: rtl;
+}
+
+input {
+    border-radius: 3px;
+    border-width: 1px;
+    line-height: 1.5;
+}
+
+
+button {
+    border-radius: 5px;
+    background-color: blue;
+    color: white;
+    font-size: 24px;
+    transition: font-size 0.5s;
+    cursor: pointer;
+}
+
+button:hover {
+    font-size: 30px;
+    transition: font-size 0.5s;
+
+}
+
+@media only screen and (max-width: 600px) {
+    input {
+        font-size: 24px;
+    }
+
+    .selectedItem {
+        font-size: 24px;
+
+    }
+    a[is="menu-item"] {
+        font-size: 20px;
+    }
+}
+
+.navigation-bar{
+    background-color: black;
+    color: white;
+}
+.navigation-bar a {
+    text-decoration: none;
+    font-size: 30px;
+    color: white;
+
+}
+
+.navigation-bar a:hover {
+    color: cadetblue;
+    transition: color 500ms;
+}
