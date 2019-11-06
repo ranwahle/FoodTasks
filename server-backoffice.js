@@ -16,7 +16,7 @@ app.get('/items', async (req, res) => {
 
 export function getItems() {
     return new Promise((resolve, reject) => {
-        filesystem.readFile('./items.json', (err, itemString) => {
+        filesystem.readFile(`${__dirname}/items.json`, (err, itemString) => {
             if (err) {
                 reject(err);
             }
