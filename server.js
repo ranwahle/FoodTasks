@@ -5,7 +5,7 @@ import fileSystem from 'fs';
 import bodyParser from 'body-parser';
 const args = getArguments(process.argv);
 
-const port = args.port || 80;
+const port = args.port || process.env.PORT || 80;
 
 
 const app = express();
