@@ -15,6 +15,12 @@ export async function setItem({kidName, selectedItem}) {
 
 }
 
+export async function undoSelection() {
+    const response = await fetch('/undo-selection', {method: 'post'});
+
+    return response.ok;
+}
+
 export async function whoBringsWhat() {
     const response = await fetch('/whobrings-what');
     const result = await response.json();

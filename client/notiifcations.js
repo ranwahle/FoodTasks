@@ -27,7 +27,6 @@ export class NotificationComponent extends HTMLElement {
         this.innerHTML = `<style>
         notification-element {
             background-color: blue;
-            transition: opacity 5s;
             color: white;
             position: fixed;
             font-size: 20px;
@@ -35,19 +34,19 @@ export class NotificationComponent extends HTMLElement {
             padding: 2px;
             top: 0px;
             right: 0;
-            opacity: 1;
-            transition: opacity 10s ease-in-out;
+            opacity: 0.9;
+            transition: opacity 5s ease-in-out;
         }
         notification-element.disappear {
             opacity: 0;
-             transition: opacity 10s ease-in-out;
+             transition: opacity 5s ease-in-out;
         }
 </style>
 <div>${this.getAttribute('message')}</div>`;
         window.requestAnimationFrame(() => {
             this.classList.add('disappear')
         });
-        setTimeout(this.destroy, 10000);
+        setTimeout(this.destroy, 5000);
     }
 }
 

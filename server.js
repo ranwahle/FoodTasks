@@ -4,7 +4,7 @@ import {getItems} from './server-backoffice.js';
 import fileSystem from 'fs';
 import bodyParser from 'body-parser';
 import path from 'path';
-
+import session from 'express-session';
 const args = getArguments(process.argv);
 
 const __dirname = path.resolve();
@@ -13,9 +13,17 @@ const __dirname = path.resolve();
 const port = args.port || process.env.PORT || 80;
 
 
+
 const app = express();
 app.use(bodyParser.json());
 app.use('/', express.static('client'));
+
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}))
 
 app.get('/items', async (req, res) => {
     const items = await getItems();
@@ -46,7 +54,10 @@ app.post('/items', async (req, res) => {
     const newItems = req.body;
     newItems.forEach(newItem => newItem.id = '#' + (Math.random() * 0xFFFFFF << 0).toString(16));
     items.push(...newItems);
-    fileSystem.writeFile('./items.json', JSON.stringify(items), () => res.status(200).send(items));
+    fileSystem.writeFile('./items.json', JSON.stringify(items),
+        () => {
+        res.status(200).send(items)
+        });
 
 
 })
@@ -64,6 +75,30 @@ const getSelectedItems = () => {
     });
 }
 
+app.post('/undo-selection', async (req, res) => {
+    if (!req.session.selectedItem) {
+        res.status(404).send('No item selected');
+        return;
+    }
+    const selectedItems = await getSelectedItems();
+
+    saveSelectedItems( selectedItems.filter(item => item.id !== req.session.selectedItem.id)
+    , (err) => {
+        if (err) {
+            res.status(500).send('Error saving');
+            return;
+        }
+
+        req.session.selectedItem = null;
+        res.status(200).send('ok');
+        })
+
+})
+
+const saveSelectedItems = (selectedItems, callback) => {
+    fileSystem.writeFile(`${__dirname}/selectedItems.json`, JSON.stringify(selectedItems), callback);
+}
+
 app.post('/set-item', async (req, res) => {
     const selectedItems = await getSelectedItems();
 
@@ -76,8 +111,9 @@ app.post('/set-item', async (req, res) => {
         res.status(400).send('already taken');
     } else {
         selectedItems.push({id: selectedItem.id, kidName});
-        fileSystem.writeFile(`${__dirname}/selectedItems.json`, JSON.stringify(selectedItems), (err, result) => {
+        saveSelectedItems(selectedItems, (err, result) => {
             if (!err) {
+                req.session.selectedItem = selectedItem;
                 res.status(201).send('OK');
             } else {
                 res.status(500).send(err);

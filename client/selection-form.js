@@ -1,4 +1,4 @@
-import {getItems, setItem} from "./food-service.js";
+import {getItems, setItem, undoSelection} from "./food-service.js";
 import {notify} from "./notiifcations.js";
 
 export class SelectionForm extends HTMLElement {
@@ -16,7 +16,17 @@ export class SelectionForm extends HTMLElement {
     async handleFormEvents() {
 
         this.refreshItems();
-        setInterval(this.refreshItems, 1000)
+        setInterval(this.refreshItems, 10000)
+
+        this.querySelector('#btnUndo').addEventListener('click', async() => {
+            const result = await undoSelection();
+            if (result) {
+                notify('בחירתך בוטלה בהצלחה');
+                this.refreshItems();
+            }
+            this.querySelector('#btnUndo').style.display = 'none';
+            this.querySelector('#btnSend').removeAttribute('disabled');
+        })
 
         this.querySelector('#btnSend').addEventListener('click', async() => {
             const kidName = document.querySelector('[name="kidName"]').value;
@@ -39,7 +49,7 @@ export class SelectionForm extends HTMLElement {
                 console.log(response);
             } else {
                 notify(`בחירתך להביא ${selectedItem.name} נרשמה `);
-                getWhoBringsWhat();
+                this.querySelector('#btnUndo').style.display = '';
                 this.querySelector('select-box').items =  await getItems();
                 this.querySelector('#btnSend').disabled = 'disabled';
             }
@@ -54,6 +64,7 @@ export class SelectionForm extends HTMLElement {
         this.innerHTML = `
         <input type="text" placeholder="שם הילד" name="kidName">
 <select-box></select-box>
+<button id="btnUndo" style="display: none;">התחרטתי</button>
 <button id="btnSend">שליחה</button>`;
     }
 }

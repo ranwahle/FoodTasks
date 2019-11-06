@@ -31,6 +31,7 @@ export class SelectBox extends HTMLElement {
         ul {
         list-style: none;
         direction: rtl;
+        padding: 0;
         }
           
         .items-container ul li:nth-child(even) {
