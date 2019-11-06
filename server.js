@@ -41,7 +41,7 @@ app.get('/whobrings-what', async (req, res) => {
 })
 
 app.post('/items',  (req, res) => {
-    filesystem.readFile(`${__dirname}/items.json`, async (err, items) => {
+    fileSystem.readFile(`${__dirname}/items.json`, async (err, items) => {
         items = await getItems();
         const newItems = req.body;
         newitems.forEach(newItem => newItem.id = '#' + (Math.random() * 0xFFFFFF << 0).toString(16));
