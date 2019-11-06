@@ -3,8 +3,9 @@ import getArguments from 'get-arguments-lib';
 import {getItems} from './server-backoffice.js';
 import fileSystem from 'fs';
 import bodyParser from 'body-parser';
-const args = getArguments(process.argv);
 import path from 'path';
+
+const args = getArguments(process.argv);
 
 const __dirname = path.resolve();
 
@@ -40,19 +41,18 @@ app.get('/whobrings-what', async (req, res) => {
     res.status(200).send(itemsWithKids);
 })
 
-app.post('/items',  (req, res) => {
-    fileSystem.readFile(`${__dirname}/items.json`, async (err, items) => {
-        items = await getItems();
-        const newItems = req.body;
-        newitems.forEach(newItem => newItem.id = '#' + (Math.random() * 0xFFFFFF << 0).toString(16));
-        items.push(...newItems);
-        filesystem.writeFile('./items.json', JSON.stringify(items), () => res.status(200).send(items));
-    });
+app.post('/items', async (req, res) => {
+    const items = await getItems();
+    const newItems = req.body;
+    newItems.forEach(newItem => newItem.id = '#' + (Math.random() * 0xFFFFFF << 0).toString(16));
+    items.push(...newItems);
+    fileSystem.writeFile('./items.json', JSON.stringify(items), () => res.status(200).send(items));
+
 
 })
 
 const getSelectedItems = () => {
-    return new Promise((resolve, reject ) => {
+    return new Promise((resolve, reject) => {
         fileSystem.readFile(`${__dirname}/selectedItems.json`, (err, items) => {
             if (err) {
                 resolve([]);
@@ -72,7 +72,7 @@ app.post('/set-item', async (req, res) => {
         res.status(400).send('kidName, or selectedItrem is missing');
         return;
     }
-    if (selectedItems.find(item => item.id === selectedItem.id )) {
+    if (selectedItems.find(item => item.id === selectedItem.id)) {
         res.status(400).send('already taken');
     } else {
         selectedItems.push({id: selectedItem.id, kidName});
@@ -86,7 +86,6 @@ app.post('/set-item', async (req, res) => {
     }
 
 })
-
 
 
 app.listen(port);

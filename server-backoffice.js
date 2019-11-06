@@ -21,7 +21,7 @@ export function getItems() {
     return new Promise((resolve, reject) => {
         filesystem.readFile(`${__dirname}/items.json`, (err, itemString) => {
             if (err) {
-                reject(err);
+                resolve([]);
             }
             try {
                 const items = JSON.parse(itemString)
