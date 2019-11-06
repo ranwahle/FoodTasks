@@ -51,6 +51,10 @@ app.get('/whobrings-what', async (req, res) => {
 
 app.post('/items', async (req, res) => {
     const items = await getItems();
+    if (items && items.length) {
+        res.status(301).send('items cannot be modified');
+        return;
+    }
     const newItems = req.body;
     newItems.forEach(newItem => newItem.id = '#' + (Math.random() * 0xFFFFFF << 0).toString(16));
     items.push(...newItems);
