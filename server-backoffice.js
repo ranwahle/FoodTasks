@@ -16,11 +16,18 @@ app.get('/items', async (req, res) => {
 
 export function getItems() {
     return new Promise((resolve, reject) => {
-        filesystem.readFile('./items.json', (err, items) => {
+        filesystem.readFile('./items.json', (err, itemString) => {
             if (err) {
                 reject(err);
             }
-            resolve(JSON.parse(items));
+            try {
+                const items = JSON.parse(itemString)
+                resolve(items);
+            } catch {
+                resolve([]);
+            }
+
+
         });
     })
 }
