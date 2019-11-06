@@ -4,6 +4,10 @@ import {getItems} from './server-backoffice.js';
 import fileSystem from 'fs';
 import bodyParser from 'body-parser';
 const args = getArguments(process.argv);
+import path from 'path';
+
+const __dirname = path.resolve();
+
 
 const port = args.port || process.env.PORT || 80;
 

@@ -1,8 +1,11 @@
 import express from 'express';
 import filesystem from 'fs';
 import bodyParser from 'body-parser';
+import path from 'path';
 
 const app = express();
+
+const __dirname = path.resolve();
 
 app.use(bodyParser.json())
 
