@@ -3,7 +3,7 @@ import dotEnv from "dotenv";
 
 const { Pool, Client } = pg;
 
-dotEnv.config();
+// dotEnv.config();
 
 // pools will use environment variables
 // for connection information
