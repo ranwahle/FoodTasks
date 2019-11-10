@@ -1,30 +1,28 @@
-export function notify( message) {
-    const element = document.createElement('notification-element');
-    element.setAttribute('message', message);
-    document.body.append(element);
+export function notify(message) {
+  const element = document.createElement("notification-element");
+  element.setAttribute("message", message);
+  document.body.append(element);
 }
 
-
 export class NotificationComponent extends HTMLElement {
+  static get observedAttributes() {
+    return ["message"];
+  }
 
-    static get observedAttributes() {
-        return ['message'];
-    }
+  attributeChangeCallback() {
+    this.render();
+  }
 
-    attributeChangeCallback() {
-        this.render();
-    }
+  connectedCallback() {
+    this.render();
+  }
 
-    connectedCallback() {
-        this.render();
-    }
+  destroy = () => {
+    this.remove();
+  };
 
-    destroy = () => {
-        this.remove();
-    }
-
-    render() {
-        this.innerHTML = `<style>
+  render() {
+    this.innerHTML = `<style>
         notification-element {
             background-color: blue;
             color: white;
@@ -42,12 +40,12 @@ export class NotificationComponent extends HTMLElement {
              transition: opacity 5s ease-in-out;
         }
 </style>
-<div>${this.getAttribute('message')}</div>`;
-        window.requestAnimationFrame(() => {
-            this.classList.add('disappear')
-        });
-        setTimeout(this.destroy, 5000);
-    }
+<div>${this.getAttribute("message")}</div>`;
+    window.requestAnimationFrame(() => {
+      this.classList.add("disappear");
+    });
+    setTimeout(this.destroy, 5000);
+  }
 }
 
-customElements.define('notification-element', NotificationComponent);
+customElements.define("notification-element", NotificationComponent);

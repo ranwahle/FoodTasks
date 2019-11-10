@@ -1,22 +1,23 @@
 export class WhoBringsWhat extends HTMLElement {
+  connectedCallback() {
+    this.render();
+  }
 
-    connectedCallback() {
-        this.render();
+  get items() {
+    return this._items || [];
+  }
+
+  set items(items) {
+    if (items !== this._items) {
+      this._items = items;
+      this.render();
     }
+  }
 
-    get items() {
-        return this._items || [];
-    }
-
-    set items(items) {
-        if (items !== this._items) {
-            this._items = items;
-            this.render();
-        }
-    }
-
-    render() {
-        this.innerHTML = (this.items && this.items.length || '') && `
+  render() {
+    this.innerHTML =
+      ((this.items && this.items.length) || "") &&
+      `
         <style>
         th, td {
             border-bottom: 1px solid;
@@ -29,15 +30,17 @@ export class WhoBringsWhat extends HTMLElement {
                 <th>כיבוד</th>
                 <th>שם הילד/ה</th>
 </tr>
-        ${this.items.map(item  => {
+        ${this.items
+          .map(item => {
             return `<tr>
                     <td>${item.name}</td>
-                        <td>${item.kidName || ''}</td>
-                    </tr>`
-        }).join('')}
+                        <td>${item.kidName || ""}</td>
+                    </tr>`;
+          })
+          .join("")}
 
-</table>`
-    }
+</table>`;
+  }
 }
 
-customElements.define('who-brings-what', WhoBringsWhat);
+customElements.define("who-brings-what", WhoBringsWhat);
