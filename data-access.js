@@ -79,7 +79,7 @@ export async function getItems() {
    return items;
   }
   catch (e) {
-    console.error('Error connecting to the database', err);
+    console.error('Error connecting to the database', e);
     return [];
   }
 
