@@ -11,7 +11,7 @@ dotEnv.config();
 function createTables() {
   const itemTable = `
 CREATE TABLE "Items" (
-    id integer IDENTITY PRIMARY KEY,
+    id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "ItemName" text
 );
 
@@ -20,7 +20,7 @@ CREATE UNIQUE INDEX "Items_pkey" ON "Items"(id int4_ops);
 
   const selectedItemsTable = `
 CREATE TABLE "selectedItems" (
-    id integer IDENTITY PRIMARY KEY,
+    id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "kidName" text,
     "itemId" integer NOT NULL DEFAULT nextval('"selectedItems_itemId_seq"'::regclass) REFERENCES "Items"(id) ON DELETE CASCADE
 );
