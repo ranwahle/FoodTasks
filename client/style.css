@@ -1,5 +1,6 @@
 body{
     direction: rtl;
+    font-family: sans-serif;
 }
 
 input {
@@ -14,11 +15,11 @@ button {
 
     font-size: 24px;
     transition: font-size 0.5s;
-    cursor: pointer;
 }
 button:not([disabled]) {
     background-color: blue;
     color: white;
+    cursor: pointer;
 }
 
 button:not([disabled]):hover {
