@@ -71,11 +71,16 @@ export async function getSelectedItems() {
 
 export async function getItems() {
   const pool = new Pool();
+ try {
+   let res = await pool.query('SELECT * from "public"."Items"'); // => {
+   await pool.end();
 
-  let res = await pool.query('SELECT * from "public"."Items"'); // => {
-  await pool.end();
+   const items = res.rows.map(row => ({id: row.id, name: row.ItemName}));
+   return items;
+  }
+  catch (e) {
+    console.error('Error connecting to the database', err);
+    return [];
+  }
 
-  const items = res.rows.map(row => ({ id: row.id, name: row.ItemName }));
-
-  return items;
 }
