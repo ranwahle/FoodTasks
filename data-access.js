@@ -14,7 +14,6 @@ CREATE TABLE "Items" (
     id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "ItemName" text
 );
-if not exists "Items_pkey"
   CREATE UNIQUE INDEX "Items_pkey" ON "Items"(id int4_ops);
 `;
 
