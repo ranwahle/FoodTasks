@@ -22,7 +22,7 @@ CREATE UNIQUE INDEX "Items_pkey" ON "Items"(id int4_ops);
 CREATE TABLE "selectedItems" (
     id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "kidName" text,
-    "itemId" integer NOT NULL DEFAULT nextval('"selectedItems_itemId_seq"'::regclass) REFERENCES "Items"(id) ON DELETE CASCADE
+    "itemId" integer NOT NULL REFERENCES "Items"(id) ON DELETE CASCADE
 );
 
 
