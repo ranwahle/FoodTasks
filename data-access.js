@@ -8,38 +8,6 @@ dotEnv.config();
 // pools will use environment variables
 // for connection information
 
-function createTables() {
-  const itemTable = `
-CREATE TABLE "Items" (
-    id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "ItemName" text
-);
-  CREATE UNIQUE INDEX "Items_pkey" ON "Items"(id int4_ops);
-`;
-
-  const selectedItemsTable = `
-CREATE TABLE "selectedItems" (
-    id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "kidName" text,
-    "itemId" integer NOT NULL REFERENCES "Items"(id) ON DELETE CASCADE
-);
-
-
-CREATE UNIQUE INDEX "selectedItems_pkey" ON "selectedItems"(id int4_ops);
-`;
-
-  const pool = new Pool();
-
-  pool.query(itemTable).then(() => {
-    pool.query(selectedItemsTable).then(() => pool.end(), (err) => {
-      console.log('Could not create selectedItems table', err)
-      pool.end()
-    });
-  }, (err) => {
-    console.error('Could not create items table', err);
-    pool.end()
-  });
-}
 
 export async function removeSelectedItem(item) {
   const text =
@@ -118,4 +86,3 @@ export async function getItems() {
   }
 
 }
-createTables();
