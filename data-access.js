@@ -28,7 +28,7 @@ export async function saveSelectedItem(selectedItem) {
   try {
     await pool.query(text, [selectedItem.kidName, selectedItem.id]);
   } catch (err) {
-    console.error(text, err);
+    console.error('Error inserting items', text, err);
   }
   await pool.end();
 }
