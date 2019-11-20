@@ -33,13 +33,13 @@ export async function saveSelectedItem(selectedItem) {
   await pool.end();
 }
 
-export async function insertItems(items) {
+export async function insertItems(items, eventId) {
   const pool = new Pool();
-  const insertCommands = `Insert into "public"."Items" ("ItemName") values ($1) `;
+  const insertCommands = `Insert into "public"."Items" ("ItemName", "eventId") values ($1, $2) `;
 
   try {
     const commands = items.map(item => {
-      return pool.query(insertCommands, [item.name]);
+      return pool.query(insertCommands, [item.name, eventId]);
     });
 
     const promise = new Promise((resolve, reject) => {
@@ -71,10 +71,13 @@ export async function getSelectedItems() {
   return items;
 }
 
-export async function getItems() {
+export async function getItems(eventId) {
+  if (typeof eventId === 'string') {
+    eventId  = +eventId;
+  }
   const pool = new Pool();
  try {
-   let res = await pool.query('SELECT * from "public"."Items"'); // => {
+   let res = await pool.query('SELECT * from "public"."Items" items where items."EventId"=$1', [eventId]); // => {
    await pool.end();
 
    const items = res.rows.map(row => ({id: row.id, name: row.ItemName}));

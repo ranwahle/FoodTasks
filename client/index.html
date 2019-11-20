@@ -10,12 +10,13 @@
 </head>
 <body>
 <div class="navigation-bar">
-    <a href="#" id="setSelectionForm">מה להביא?</a>
-    <a href="#"id="seeWhoBringsWhat">מי מביא/ה מה?</a>
+    <a href="/" id="setSelectionForm"  is="self-routing-anchor" >מה להביא?</a>
+    <a href="/who-brings-what" is="self-routing-anchor" id="seeWhoBringsWhat">מי מביא/ה מה?</a>
 
 </div>
-<selection-form>   </selection-form>
+<router-outlet></router-outlet>
+<!--<selection-form>   </selection-form>-->
 
-<who-brings-what style="display: none"></who-brings-what>
+<!--<who-brings-what style="display: none"></who-brings-what>-->
 </body>
 </html>

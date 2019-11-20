@@ -30,8 +30,8 @@ export async function undoSelection() {
   return response.ok;
 }
 
-export async function whoBringsWhat() {
-  const response = await fetch("/whobrings-what");
+export async function whoBringsWhat(eventId) {
+  const response = await fetch(`/whobrings-what/${eventId}`);
   const result = await response.json();
   return result;
 }

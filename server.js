@@ -31,8 +31,9 @@ app.get("/items", sessionMiddleware, async (req, res) => {
     res.status(200).send(result);
 });
 
-app.get("/whobrings-what", sessionMiddleware, async (req, res) => {
-    const items = await getItems();
+app.get("/whobrings-what/:eventId", sessionMiddleware, async (req, res) => {
+    const eventId = req.params['eventId'];
+    const items = await getItems(+eventId);
     const selectedItems = await getSelectedItems();
     const itemsWithKids = items.map(item => {
         const itemKid = selectedItems.find(selItem => selItem.id === item.id);
@@ -50,14 +51,14 @@ app.get("/my-selected-item", sessionMiddleware, (req, res) => {
     res.status(200).send(req.session.selectedItem);
 });
 
-app.post("/items", sessionMiddleware, async (req, res) => {
-    const items = await getItems();
+app.post("/items/:eventId", sessionMiddleware, async (req, res) => {
+    const eventId = req.params['eventId']
+    const items = await getItems(eventId);
     if (items && items.length) {
         res.status(301).send("items cannot be modified");
         return;
     }
     const newItems = req.body;
-
     await insertItems(newItems);
     res.status(200).send(items);
 });
