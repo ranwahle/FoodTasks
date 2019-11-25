@@ -19,7 +19,8 @@ app.use("/vendors", express.static("node_modules"));
 app.use("/", express.static("client"));
 
 
-app.get("/items", sessionMiddleware, async (req, res) => {
+app.get("/items/:eventId", sessionMiddleware, async (req, res) => {
+    const eventId = req.params['eventId'];
     const items = await getItems();
 
     const selectedItems = await getSelectedItems();

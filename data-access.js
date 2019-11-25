@@ -77,6 +77,7 @@ export async function getItems(eventId) {
   }
   const pool = new Pool();
  try {
+
    let res = await pool.query('SELECT * from "public"."Items" items where items."EventId"=$1', [eventId]); // => {
    await pool.end();
 
